@@ -1,5 +1,6 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Image} from 'react-native';
+import {useDispatch} from 'react-redux';
 import Background from '~/components/Background';
 import log from '~/assets/logo.png';
 import {
@@ -10,12 +11,15 @@ import {
   Sighlink,
   SighlinkText,
 } from './styles';
+import {signInRequest} from '~/store/modules/auth/actions';
 
 export default function SignIn({navigation}) {
-  const emailRef = useRef();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
   const passowordRef = useRef();
   function handleSubmit() {
-    alert(1);
+    dispatch(signInRequest(email, password));
   }
   return (
     <Background>
@@ -23,22 +27,15 @@ export default function SignIn({navigation}) {
         <Image source={log} />
         <Form>
           <FormInput
-            icon="person-outline"
-            autoCorrect={false}
-            autoCapitalize="none"
-            placeholder="Digite Seu Nome"
-            returnKeyType="next"
-            onSubmitEditing={() => emailRef.current.focus()}
-          />
-          <FormInput
             icon="mail-outline"
             keyboardType="email-address"
             autoCorrect={false}
             autoCapitalize="none"
-            placeholder="Digite Seu e-mail"
-            ref={emailRef}
+            placeholder="Digite ser e-mail"
             returnKeyType="next"
             onSubmitEditing={() => passowordRef.current.focus()}
+            value={email}
+            onChangeText={setEmail}
           />
 
           <FormInput
@@ -48,11 +45,13 @@ export default function SignIn({navigation}) {
             ref={passowordRef}
             returnKeyType="send"
             onSubmitEditing={handleSubmit}
+            value={password}
+            onChangeText={setPassword}
           />
           <SubmitButton onPress={handleSubmit}>Acessar</SubmitButton>
         </Form>
-        <Sighlink onPress={() => navigation.navigate('SignIn')}>
-          <SighlinkText>Já Tenho Conta</SighlinkText>
+        <Sighlink onPress={() => navigation.navigate('SignUp')}>
+          <SighlinkText>Crir conta Gratuita</SighlinkText>
         </Sighlink>
       </Container>
     </Background>
